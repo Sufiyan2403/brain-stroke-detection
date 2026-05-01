@@ -129,7 +129,12 @@ def prediction():
     if request.method == 'POST':
         myfile = request.files['file']
         fn = myfile.filename
-        mypath = os.path.join(r'static\saved_images', fn)
+
+        # Ensure save directory exists (required on Linux/cloud where it may not be pre-created)
+        save_dir = os.path.join('static', 'saved_images')
+        os.makedirs(save_dir, exist_ok=True)
+
+        mypath = os.path.join(save_dir, fn)
         myfile.save(mypath)
 
         # Device configuration
@@ -232,7 +237,7 @@ def prediction():
 
         # Save Grad-CAM image next to the original
         gradcam_filename = 'gradcam_' + fn
-        gradcam_path = os.path.join(r'static\saved_images', gradcam_filename)
+        gradcam_path = os.path.join('static', 'saved_images', gradcam_filename)
         Image.fromarray(blended).save(gradcam_path)
 
         # Map prediction to human-readable label
