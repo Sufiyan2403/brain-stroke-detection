@@ -32,6 +32,33 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
+# ── Model — loaded ONCE at startup, reused for every request ──────────────────
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+image_transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+
+class MobileNetModel(nn.Module):
+    def __init__(self, num_classes):
+        super(MobileNetModel, self).__init__()
+        # pretrained=False: we load our own weights below, no internet download needed
+        self.mobilenet = models.mobilenet_v2(pretrained=False)
+        num_features = self.mobilenet.classifier[1].in_features
+        self.mobilenet.classifier[1] = nn.Linear(num_features, num_classes)
+
+    def forward(self, x):
+        return self.mobilenet(x)
+
+model = MobileNetModel(num_classes=2)
+model.load_state_dict(torch.load("mobilenet.pt", map_location=torch.device('cpu')))
+model = model.to(device)
+model.eval()
+print("MobileNetV2 model loaded successfully.")
+# ─────────────────────────────────────────────────────────────────────────────
+
 def executionquery(query,values):
     mycursor.execute(query,values)
     mydb.commit()
@@ -136,33 +163,6 @@ def prediction():
 
         mypath = os.path.join(save_dir, fn)
         myfile.save(mypath)
-
-        # Device configuration
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-        # Image transformations
-        image_transform = transforms.Compose([
-            transforms.Resize((224, 224)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        ])
-
-        # Define the model class (same as the one used during training)
-        class MobileNetModel(nn.Module):
-            def __init__(self, num_classes):
-                super(MobileNetModel, self).__init__()
-                self.mobilenet = models.mobilenet_v2(pretrained=True)
-                num_features = self.mobilenet.classifier[1].in_features
-                self.mobilenet.classifier[1] = nn.Linear(num_features, num_classes)
-
-            def forward(self, x):
-                return self.mobilenet(x)
-
-        # Load the trained model
-        model = MobileNetModel(num_classes=2)
-        model.load_state_dict(torch.load("mobilenet.pt", map_location=torch.device('cpu')))
-        model = model.to(device)
-        model.eval()
 
         # Load and preprocess the image
         original_image = Image.open(mypath).convert('RGB')
