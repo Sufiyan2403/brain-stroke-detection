@@ -9,5 +9,5 @@ torchvision==0.17.2+cpu
 pillow
 matplotlib
 scikit-learn
-numpy
+numpy==1.26.4
 openpyxl
