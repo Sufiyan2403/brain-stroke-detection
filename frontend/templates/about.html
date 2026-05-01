@@ -1,0 +1,98 @@
+{% extends 'index.html' %}
+
+{% block navbar %}
+  <li><a class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors" href="{{ url_for('home') }}">Home</a></li>
+  <li><a class="nav-link active text-sm font-medium text-white" href="{{ url_for('about') }}">About</a></li>
+  <li><a class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors" href="{{ url_for('prediction') }}">Detection</a></li>
+  <li>
+    <a href="{{ url_for('index') }}"
+       class="px-5 py-2 rounded-full text-sm font-semibold text-slate-300 border border-surface-border hover:border-red-500/50 hover:text-red-400 transition-colors">
+      Log Out
+    </a>
+  </li>
+{% endblock %}
+
+{% block content %}
+<section class="min-h-screen py-24 relative overflow-hidden">
+  <div class="absolute top-1/4 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-72 h-72 bg-accent/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="relative max-w-5xl mx-auto px-6">
+    <!-- Header -->
+    <div class="mb-16">
+      <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-full px-4 py-2 mb-6">
+        <span class="text-sm text-primary-light font-medium">Research Overview</span>
+      </div>
+      <h1 class="text-5xl font-extrabold text-white mb-4">About the Project</h1>
+      <p class="text-slate-400 text-lg max-w-2xl">
+        A hybrid deep learning framework for automated brain stroke detection from medical images.
+      </p>
+    </div>
+
+    <!-- Main content card -->
+    <div class="glow-card rounded-3xl p-10 mb-8">
+      <h2 class="text-2xl font-bold text-white mb-4">Project Summary</h2>
+      <p class="text-slate-400 leading-relaxed text-base">
+        This project successfully designed, implemented, and evaluated a hybrid deep learning framework
+        for the automated detection of brain stroke from medical images. Motivated by the critical need
+        for rapid and accurate diagnostic aids, this research focused on comparing two distinct hybrid
+        models to identify an optimal balance between performance and efficiency.
+      </p>
+    </div>
+
+    <!-- Two model cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Model 1 -->
+      <div class="glow-card rounded-3xl p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+        <div class="relative">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
+              <span class="text-primary-light font-bold text-sm">M1</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">DenseNet121 + SVM</h3>
+          </div>
+          <div class="text-4xl font-extrabold text-white mb-2">91%</div>
+          <div class="text-sm text-slate-500 mb-4">Detection Accuracy</div>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Combines a powerful DenseNet121 deep feature extractor with a robust
+            Support Vector Machine classifier. The CNN extracts rich feature representations
+            which the SVM classifies with high precision.
+          </p>
+        </div>
+      </div>
+
+      <!-- Model 2 -->
+      <div class="glow-card rounded-3xl p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-2xl"></div>
+        <div class="relative">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-accent/20 rounded-xl flex items-center justify-center">
+              <span class="text-accent font-bold text-sm">M2</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">VGG16 + MLP + SMOTE</h3>
+          </div>
+          <div class="text-4xl font-extrabold text-white mb-2">93%</div>
+          <div class="text-sm text-slate-500 mb-4">Detection Accuracy</div>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Addresses class imbalance using SMOTE at the feature level, then trains
+            a Multi-Layer Perceptron on the balanced VGG16 feature set. Achieves
+            superior accuracy and better minority-class recall.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conclusion -->
+    <div class="glow-card rounded-3xl p-8">
+      <h2 class="text-xl font-bold text-white mb-3">Key Findings</h2>
+      <p class="text-slate-400 leading-relaxed text-sm">
+        The comparative analysis demonstrates that both hybrid models are highly effective for stroke detection.
+        However, the VGG16-MLP model augmented with SMOTE showed a meaningful performance advantage,
+        highlighting the importance of addressing class imbalance in medical imaging systems. The current
+        deployment uses MobileNetV2 with Grad-CAM for real-time explainable inference.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

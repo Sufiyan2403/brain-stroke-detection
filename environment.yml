@@ -1,0 +1,38 @@
+name: brain_stroke
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # ── Python ────────────────────────────────────────────────
+  - python=3.10
+
+  # ── Scientific stack (conda-managed for speed) ────────────
+  # NOTE: pillow is intentionally installed via pip (below) to avoid
+  #       a DLL conflict when pip downgrades numpy for TF compatibility.
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - joblib
+
+  # ── Jupyter (optional – needed to re-run backend notebook) ─
+  - jupyter
+  - ipykernel
+
+  # ── pip-only packages ─────────────────────────────────────
+  - pip
+  - pip:
+    # Flask web framework
+    - flask
+    # MySQL connector
+    - mysql-connector-python
+    # PyTorch CPU build – matches map_location='cpu' in app.py
+    - torch==2.2.2+cpu
+    - torchvision==0.17.2+cpu
+    - --extra-index-url https://download.pytorch.org/whl/cpu
+    # TensorFlow 2.15 is compatible with typing-extensions>=4.8 (same range as torch 2.2)
+    - tensorflow==2.15.1
+    # Pillow installed via pip to stay consistent with pip-managed numpy (avoids DLL mismatch)
+    - pillow
+    # Excel support for pandas read_excel
+    - openpyxl

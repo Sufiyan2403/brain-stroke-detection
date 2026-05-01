@@ -1,0 +1,13 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+flask
+gunicorn
+mysql-connector-python
+pandas
+torch==2.2.2+cpu
+torchvision==0.17.2+cpu
+pillow
+matplotlib
+scikit-learn
+numpy
+openpyxl

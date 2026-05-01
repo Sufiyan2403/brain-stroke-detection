@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Conda
+*.conda
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Uploaded images (ephemeral — regenerated per request)
+frontend/static/saved_images/*
+!frontend/static/saved_images/.gitkeep
+
+# Large data / model files in backend (not needed for web app)
+code/backend/*.joblib
+code/backend/Brain_Data_Organised/
+
+# OS
+.DS_Store
+Thumbs.db
